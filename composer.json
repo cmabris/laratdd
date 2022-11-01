@@ -38,6 +38,14 @@
         }
     },
     "scripts": {
+        "test": "./vendor/bin/phpunit",
+        "permissions": "sudo chown $USER:$USER -R .",
+        "docker-up": "cd ../laradock && docker-compose up -d nginx mysql phpmyadmin workspace && cd -",
+        "docker-down": "cd ../laradock && docker-compose down && cd -",
+        "bash": "cd ../laradock && docker-compose exec --user=laradock workspace bash && cd -",
+        "tinker": "cd ../laradock && docker-compose exec --user=laradock workspace php ./laratdd/artisan tinker && cd -",
+        "db:seed": "cd ../laradock && docker-compose exec --user=laradock workspace php ./laratdd/artisan db:seed && cd -",
+        "route:list": "cd ../laradock && docker-compose exec --user=laradock workspace php ./laratdd/artisan route:list && cd -",
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
