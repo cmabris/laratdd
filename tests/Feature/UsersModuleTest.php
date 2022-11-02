@@ -20,6 +20,15 @@ class UsersModuleTest extends TestCase
             ->assertSee('Ellie');
     }
 
+    /** @test  */
+    function it_shows_a_default_page_if_the_users_list_is_empty()
+    {
+        $this->get('usuarios?empty')
+            ->assertStatus(200)
+            ->assertSee('Listado de usuarios')
+            ->assertSee('No hay usuarios registrados');
+    }
+
     /**
      * @test
      */
@@ -27,7 +36,7 @@ class UsersModuleTest extends TestCase
     {
         $this->get('usuarios/5')
             ->assertStatus(200)
-            ->assertSee('Mostrando detalles del usuario: 5');
+            ->assertSee('Mostrando los detalles del usuario #5');
     }
 
     /**
