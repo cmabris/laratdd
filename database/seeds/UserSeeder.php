@@ -13,28 +13,28 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        /*$professions = DB::select('SELECT id FROM professions WHERE title="Desarrollador Back-End"');
-        $professions = DB::select(
-            'SELECT id FROM professions WHERE title=?',
-            ['Desarrollador Back-End']
-        );
-        $profession = DB::table('professions')
-            ->select('id')
-            ->where('title', 'Desarrollador Back-End')
-            ->first();
-        $professionId = DB::table('professions')
-            ->where('title', 'Desarrollador Back-End')
-            ->value('id');
-        $professionId = DB::table('professions')
-            ->whereTitle('Desarrollador Back-End')
-            ->value('id');*/
-
         User::create([
             'name' => 'Pepe Pérez',
             'email' => 'pepe@mail.es',
             'password' => bcrypt('123456'),
             'profession_id' => Profession::whereTitle('Desarrollador Back-End')
-                ->value('id')
+                ->value('id'),
+            'is_admin' => true,
+        ]);
+
+        User::create([
+            'name' => 'Juan Martínez',
+            'email' => 'juan@mail.es',
+            'password' => bcrypt('123456'),
+            'profession_id' => Profession::whereTitle('Desarrollador Back-End')
+                ->value('id'),
+        ]);
+
+        User::create([
+            'name' => 'Jaime Sánchez',
+            'email' => 'jaime@mail.es',
+            'password' => bcrypt('123456'),
+            'profession_id' => null,
         ]);
     }
 }
