@@ -7,7 +7,3 @@
 
     <p>Mostrando los detalles del usuario #{{ $id }}</p>
 @endsection
-
-@section('sidebar')
-    <h2>Barra lateral personaliza</h2>
-@endsection
