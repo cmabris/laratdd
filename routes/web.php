@@ -19,7 +19,7 @@ Route::get('usuarios', 'UserController@index')->name('users');
 
 Route::get('usuarios/nuevo', 'UserController@create')->name('user.create');
 
-Route::post('usuarios/crear', 'UserController@store')->name('user.store');
+Route::post('usuarios', 'UserController@store')->name('user.store');
 
 Route::get('usuarios/{user}', 'UserController@show')
     ->name('user.show');
