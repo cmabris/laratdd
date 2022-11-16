@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::get('usuarios', 'UserController@index')->name('users');
 
-Route::get('usuarios/{id}', 'UserController@show')
+Route::get('usuarios/{user}', 'UserController@show')
     ->where('id', '[0-9]+')
     ->name('user.show');
 
