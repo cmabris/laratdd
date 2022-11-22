@@ -21,8 +21,11 @@ Route::get('usuarios/nuevo', 'UserController@create')->name('user.create');
 
 Route::post('usuarios', 'UserController@store')->name('user.store');
 
+Route::get('usuarios/{user}/editar', 'UserController@edit')->name('users.edit');
+
 Route::get('usuarios/{user}', 'UserController@show')
     ->name('user.show');
+
 
 
 Route::get('saludo/{name}/{nickname?}', 'WelcomeUserController');
