@@ -309,4 +309,16 @@ class UsersModuleTest extends TestCase
             'password' => $oldPassword,
         ]);
     }
+
+    /** @test */
+    function it_deletes_a_user()
+    {
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+
+        $this->delete('usuarios/' . $user->id)
+            ->assertRedirect('usuarios');
+
+        $this->assertSame(0, User::count());
+    }
 }
