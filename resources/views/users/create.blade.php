@@ -3,7 +3,11 @@
 @section('title', 'Nuevo usuario')
 
 @section('content')
-    <h1>Crear nuevo usuario</h1>
+    <div class="card">
+        <div class="card-header h4">
+            Crear nuevo usuario
+        </div>
+    </div>
 
     @if($errors->any())
         <div class="alert alert-danger">
@@ -19,21 +23,25 @@
     <form action="{{ route('user.store') }}" method="post">
         {{ csrf_field() }}
 
-        <label for="name">Nombre:</label>
-        <input type="text" name="name" placeholder="Nombre" value="{{ old('name') }}">
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" name="name" class="form-control" placeholder="Nombre"
+                   value="{{ old('name') }}">
+        </div>
 
-        <br>
-        <label for="email">Correo electrónico:</label>
-        <input type="email" name="email" placeholder="Correo electrónico" value="{{ old('email') }}">
+        <div class="form-group">
+            <label for="email">Correo electrónico:</label>
+            <input type="email" name="email" class="form-control"
+                   placeholder="Correo electrónico" value="{{ old('email') }}">
+        </div>
 
-        <br>
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password" placeholder="Escribe tu contraseña">
-        <br>
-        <button type="submit">Crear usuario</button>
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" class="form-control"
+                   placeholder="Escribe tu contraseña">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear usuario</button>
+        <a href="{{ route('users') }}" class="btn btn-link">Regresar al listado de usuarios</a>
     </form>
-
-    <p>
-        <a href="{{ route('users') }}">Regresar al listado de usuarios</a>
-    </p>
 @endsection
