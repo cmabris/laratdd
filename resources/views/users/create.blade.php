@@ -52,6 +52,16 @@
                 value="{{ old('twitter') }}" placeholder="URL de tu usuario de twitter">
         </div>
 
+        <div class="form-group">
+            <label for="profession_id">Profesión:</label>
+            <select name="profession_id" id="profession_id" class="form-control">
+                <option value="">Selecciona una opción...</option>
+                @foreach($professions as $profession)
+                    <option value="{{ $profession->id }}" {{ old('profession_id') == $profession->id ? ' selected' : '' }}>{{ $profession->title }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Crear usuario</button>
         <a href="{{ route('users') }}" class="btn btn-link">Regresar al listado de usuarios</a>
     </form>
