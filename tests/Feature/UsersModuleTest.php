@@ -112,7 +112,7 @@ class UsersModuleTest extends TestCase
             ]))->assertRedirect('usuarios/nuevo')
             ->assertSessionHasErrors(['name' => 'El campo nombre es obligatorio']);
 
-        $this->assertEquals(0, User::count());
+        $this->assertDatabaseEmpty('users');
     }
 
     /** @test */
@@ -124,7 +124,7 @@ class UsersModuleTest extends TestCase
             ]))->assertRedirect('usuarios/nuevo')
             ->assertSessionHasErrors(['email' => 'El campo email es obligatorio']);
 
-        $this->assertEquals(0, User::count());
+        $this->assertDatabaseEmpty('users');
     }
 
     /** @test */
@@ -136,7 +136,7 @@ class UsersModuleTest extends TestCase
             ]))->assertRedirect('usuarios/nuevo')
             ->assertSessionHasErrors(['password' => 'El campo contraseña es obligatorio']);
 
-        $this->assertEquals(0, User::count());
+        $this->assertDatabaseEmpty('users');
     }
 
     /** @test */
@@ -148,7 +148,7 @@ class UsersModuleTest extends TestCase
             ]))->assertRedirect('usuarios/nuevo')
             ->assertSessionHasErrors('email');
 
-        $this->assertEquals(0, User::count());
+        $this->assertDatabaseEmpty('users');
     }
 
     /** @test */
@@ -320,7 +320,7 @@ class UsersModuleTest extends TestCase
         $this->delete('usuarios/' . $user->id)
             ->assertRedirect('usuarios');
 
-        $this->assertSame(0, User::count());
+        $this->assertDatabaseEmpty('users');
     }
 
     /** @test */
