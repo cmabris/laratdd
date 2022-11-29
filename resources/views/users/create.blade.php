@@ -52,6 +52,16 @@
                 value="{{ old('twitter') }}" placeholder="URL de tu usuario de twitter">
         </div>
 
+        <div class="form-group">
+            <label for="profession_id">Profesión:</label>
+            <select name="profession_id" id="profession_id" class="form-control">
+                <option value="">Selecciona una opción...</option>
+                @foreach($professions as $profession)
+                    <option value="{{ $profession->id }}" {{ old('profession_id') == $profession->id ? ' selected' : '' }}>{{ $profession->title }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <h5>Habilidades</h5>
 
         @foreach($skills as $skill)
@@ -64,15 +74,18 @@
             </div>
         @endforeach
 
-        <div class="form-group">
-            <label for="profession_id">Profesión:</label>
-            <select name="profession_id" id="profession_id" class="form-control">
-                <option value="">Selecciona una opción...</option>
-                @foreach($professions as $profession)
-                    <option value="{{ $profession->id }}" {{ old('profession_id') == $profession->id ? ' selected' : '' }}>{{ $profession->title }}</option>
-                @endforeach
-            </select>
-        </div>
+        <h5 class="mt-3">Rol</h5>
+
+        @foreach($roles as $role => $name)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="role"
+                       id="role_{{ $role }}" value="{{ $role }}"
+                       {{ old('role') === $role ? ' checked' : '' }}
+                >
+                <label class="form-check-label" for="{{ $role }}">{{ $name }}</label>
+            </div>
+        @endforeach
+
 
         <div class="form-group mt-4">
             <button type="submit" class="btn btn-primary">Crear usuario</button>
