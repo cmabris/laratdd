@@ -10,27 +10,15 @@ class UserController extends Controller
 {
     public function index()
     {
-        //$users = DB::table('users')->get();
-
         $users = User::all();
 
         $title = 'Listado de usuarios';
-
-        /*if (request()->has('empty')) {
-            $users = [];
-        } else {
-            $users = ['Joel', 'Ellie', 'Tess', 'Tommy', 'Bill'];
-        }*/
 
         return view('users.index', compact(
             'title',
             'users'
             )
         );
-
-        /*return view('users.index')
-            ->with('users', User::all())
-            ->with('title', 'Listado de usuarios');*/
     }
 
     public function show(User $user)
@@ -45,6 +33,7 @@ class UserController extends Controller
     public function create()
     {
         return view('users.create', [
+            'user' => new User,
             'professions' => Profession::orderBy('title', 'ASC')->get(),
             'skills' => Skill::orderBy('name', 'ASC')->get(),
             'roles' => trans('users.roles'),
@@ -60,7 +49,12 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        return view('users.edit', [
+            'user' => $user,
+            'professions' => Profession::orderBy('title', 'ASC')->get(),
+            'skills' => Skill::orderBy('name', 'ASC')->get(),
+            'roles' => trans('users.roles'),
+        ]);
     }
 
     public function update(User $user)
