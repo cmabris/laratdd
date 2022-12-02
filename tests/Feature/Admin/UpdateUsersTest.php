@@ -67,10 +67,9 @@ class UpdateUsersTest extends TestCase
             'skills' => [$newSkill1->id, $newSkill2->id]
         ])->assertRedirect('usuarios/' . $user->id);
 
-        $this->assertCredentials([
+        $this->assertDatabaseHas('users', [
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
-            'password' => '12345678',
             'role' => 'admin',
         ]);
 

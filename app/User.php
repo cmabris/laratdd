@@ -10,14 +10,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = [];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -51,28 +45,5 @@ class User extends Authenticatable
     public static function findByEmail($email)
     {
         return static::whereEmail($email)->first();
-    }
-
-    public static function createUser($data)
-    {
-        DB::transaction(function () use ($data) {
-            $user = new User([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-            ]);
-
-            $user->role = $data['role'] ?? 'user';
-
-            $user->save();
-
-            $user->profile()->create([
-                'bio' => $data['bio'],
-                'twitter' => $data['twitter'],
-                'profession_id' => $data['profession_id'],
-            ]);
-
-            $user->skills()->attach($data['skills'] ?? []);
-        });
     }
 }
