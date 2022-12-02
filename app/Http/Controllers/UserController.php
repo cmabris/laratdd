@@ -30,14 +30,19 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-    public function create()
+    protected function form($view, User $user)
     {
-        return view('users.create', [
-            'user' => new User,
+        return view($view, [
+            'user' => $user,
             'professions' => Profession::orderBy('title', 'ASC')->get(),
             'skills' => Skill::orderBy('name', 'ASC')->get(),
             'roles' => trans('users.roles'),
         ]);
+    }
+
+    public function create()
+    {
+        return $this->form('users.create', new User);
     }
 
     public function store(CreateUserRequest $request)
@@ -49,12 +54,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.edit', [
-            'user' => $user,
-            'professions' => Profession::orderBy('title', 'ASC')->get(),
-            'skills' => Skill::orderBy('name', 'ASC')->get(),
-            'roles' => trans('users.roles'),
-        ]);
+        return $this->form('users.edit', $user);
     }
 
     public function update(User $user)
@@ -63,6 +63,11 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
             'password' => '',
+            'role' => '',
+            'bio' => '',
+            'twitter' => '',
+            'profession_id' => '',
+            'skills' => '',
         ]);
 
         if ($data['password'] != null) {
@@ -71,7 +76,13 @@ class UserController extends Controller
             unset($data['password']);
         }
 
-        $user->update($data);
+        $user->fill($data);
+        $user->role = $data['role'];
+        $user->save();
+
+        $user->profile->update($data);
+
+        $user->skills()->sync($data['skills'] ?? []);
 
         return redirect()->route('user.show', $user);
     }
