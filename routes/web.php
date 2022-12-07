@@ -21,7 +21,13 @@ Route::get('usuarios/nuevo', 'UserController@create')->name('user.create');
 
 Route::post('usuarios', 'UserController@store')->name('user.store');
 
+Route::get('usuarios/papelera', 'UserController@trashed')
+    ->name('users.trashed');
+
 Route::get('usuarios/{user}/editar', 'UserController@edit')->name('users.edit');
+
+Route::patch('usuarios/{user}/papelera', 'UserController@trash')
+    ->name('users.trash');
 
 Route::get('usuarios/{user}', 'UserController@show')
     ->name('user.show');
