@@ -13,6 +13,10 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" integrity="sha512-UyNhw5RNpQaCai2EdC+Js0QL4RlVmiq41DkmCJsRV3ZxipG2L0HhTqIf/H9Hp8ez2EnFlkBnjRGJU2stW3Lj+w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom styles for this template CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="/docs/4.5/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="/docs/4.5/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -73,18 +77,18 @@
 
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
-    <div class="container">
-        <div class="row pt-5 mt-5 ml-5">
-            <div class="col-12">
-                @yield('content')
-            </div>
+    <div class="row mt-3">
+        <div class="col-1"></div>
+        <div class="col-10">
+            @yield('content')
         </div>
+        <div class="col-1"></div>
     </div>
 </main>
 
 <footer class="footer mt-auto py-3">
     <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
+        <span class="text-muted">Curso de Laravel desde 0 para 2DAW</span>
     </div>
 </footer>
 <script src="{{ asset('js/jquery-3.5.1.slim.min.js') }}" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
