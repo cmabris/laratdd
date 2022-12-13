@@ -47,6 +47,7 @@
             @endforeach
             </tbody>
         </table>
+        {{ $users->links() }}
     @else
         <p>No hay usuarios registrados</p>
     @endif
