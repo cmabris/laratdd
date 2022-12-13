@@ -64,15 +64,20 @@ class UserController extends Controller
         return redirect()->route('user.show', $user);
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
+        $user = User::onlyTrashed()
+            ->where('id', $id)
+            ->firstOrFail();
+
         $user->forceDelete();
 
-        return redirect()->route('users');
+        return redirect()->route('users.trashed');
     }
 
     public function trash(User $user)
     {
+        $user->profile()->delete();
         $user->delete();
 
         return redirect()->route('users');
