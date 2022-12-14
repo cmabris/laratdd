@@ -1,20 +1,15 @@
 <form method="get" action="{{ route('users') }}">
-<!--    <div class="row row-filters">
+    <div class="row row-filters">
         <div class="col-12">
-            <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                <label class="form-check-label" for="inlineRadio1">Todos</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                <label class="form-check-label" for="inlineRadio2">Solo activos</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                <label class="form-check-label" for="inlineRadio3">Solo inactivos</label>
-            </div>
+            @foreach(['' => 'Todos', 'with_team' => 'Con equipo', 'without_team' => 'Sin equipo'] as $value => $text)
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="team" id="team_{{ $value ?: 'all' }}"
+                           value="{{ $value }}" {{ $value === request('team', '') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="team_{{ $value ?: 'all' }}">{{ $text }}</label>
+                </div>
+            @endforeach
         </div>
-    </div>-->
+    </div>
     <div class="row row-filters">
         <div class="col-md-6">
             <div class="form-inline form-search">
