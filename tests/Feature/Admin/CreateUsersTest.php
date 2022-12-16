@@ -14,7 +14,8 @@ class CreateUsersTest extends TestCase
     use RefreshDatabase;
 
     protected $defaultData = [
-        'name' => 'Pepe',
+        'first_name' => 'Pepe',
+        'last_name' => 'Pérez',
         'email' => 'pepe@mail.es',
         'password' => '12345678',
         'profession_id' => '',
@@ -57,7 +58,8 @@ class CreateUsersTest extends TestCase
 
 
         $this->assertCredentials([
-            'name' => 'Pepe',
+            'first_name' => 'Pepe',
+            'last_name' => 'Pérez',
             'email' => 'pepe@mail.es',
             'password' => '12345678',
             'role' => 'user',
@@ -101,15 +103,29 @@ class CreateUsersTest extends TestCase
     }
 
     /** @test */
-    function the_name_is_required()
+    function the_first_name_is_required()
     {
         $this->withExceptionHandling();
 
         $this->from('usuarios/nuevo')
             ->post('usuarios', $this->getValidData([
-                'name' => ''
+                'first_name' => ''
             ]))
-            ->assertSessionHasErrors(['name' => 'El campo nombre es obligatorio']);
+            ->assertSessionHasErrors(['first_name' => 'El campo nombre es obligatorio']);
+
+        $this->assertDatabaseEmpty('users');
+    }
+
+    /** @test */
+    function the_last_name_is_required()
+    {
+        $this->withExceptionHandling();
+
+        $this->from('usuarios/nuevo')
+            ->post('usuarios', $this->getValidData([
+                'last_name' => ''
+            ]))
+            ->assertSessionHasErrors(['last_name' => 'El campo apellidos es obligatorio']);
 
         $this->assertDatabaseEmpty('users');
     }
@@ -182,7 +198,7 @@ class CreateUsersTest extends TestCase
         ]))->assertRedirect('usuarios');
 
         $this->assertCredentials([
-            'name' => 'Pepe',
+            'first_name' => 'Pepe',
             'email' => 'pepe@mail.es',
             'password' => '12345678',
         ]);
@@ -235,7 +251,7 @@ class CreateUsersTest extends TestCase
         ]))->assertRedirect('usuarios');
 
         $this->assertCredentials([
-            'name' => 'Pepe',
+            'first_name' => 'Pepe',
             'email' => 'pepe@mail.es',
             'password' => '12345678',
         ]);
