@@ -10,7 +10,7 @@
         </p>
     </div>
 
-    @include('users._filters')
+    @includeWhen(isset($states),'users._filters')
 
     @if($users->isNotEmpty())
         <div class="table-responsive-lg table-striped">
