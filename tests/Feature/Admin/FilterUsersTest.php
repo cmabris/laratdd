@@ -9,12 +9,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FilterUsersTest extends TestCase
 {
+    use RefreshDatabase;
     /** @test */
     function filter_users_by_state_active()
     {
-        $this->markTestIncomplete();
-        $activeUser = factory(User::class)->create();
-        $inactiveUser = factory(User::class)->create();
+        $activeUser = factory(User::class)
+            ->create(['active' => true]);
+        $inactiveUser = factory(User::class)
+            ->create(['active' => false]);
 
         $response = $this->get('usuarios?state=active');
 
@@ -26,9 +28,10 @@ class FilterUsersTest extends TestCase
     /** @test */
     function filter_users_by_state_inactive()
     {
-        $this->markTestIncomplete();
-        $activeUser = factory(User::class)->create();
-        $inactiveUser = factory(User::class)->create();
+        $activeUser = factory(User::class)
+            ->create(['active' => true]);
+        $inactiveUser = factory(User::class)
+            ->create(['active' => false]);
 
         $response = $this->get('usuarios?state=inactive');
 
