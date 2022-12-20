@@ -60,7 +60,8 @@ class UpdateUsersTest extends TestCase
         $this->put('usuarios/'.$user->id, $this->getValidData([
             'role' => 'admin',
             'profession_id' => $newProfession->id,
-            'skills' => [$newSkill1->id, $newSkill2->id]
+            'skills' => [$newSkill1->id, $newSkill2->id],
+            'state' => 'inactive',
         ]))->assertRedirect('usuarios/' . $user->id);
 
         $this->assertDatabaseHas('users', [
@@ -68,6 +69,7 @@ class UpdateUsersTest extends TestCase
             'last_name' => 'Pérez',
             'email' => 'pepe@mail.es',
             'role' => 'admin',
+            'active' => false,
         ]);
 
         $this->assertDatabaseHas('user_profiles', [
@@ -231,5 +233,37 @@ class UpdateUsersTest extends TestCase
             ->assertRedirect('usuarios/' . $user->id);
 
         $this->assertDatabaseEmpty('skill_user');
+    }
+
+    /** @test */
+    function the_state_is_required()
+    {
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $this->from('usuarios/'.$user->id.'/editar')
+            ->put('usuarios/'.$user->id, $this->getValidData([
+                'state' => '',
+            ]))->assertRedirect('usuarios/' . $user->id . '/editar')
+            ->assertSessionHasErrors(['state']);
+
+        $this->assertDatabaseMissing('users', ['first_name' => 'Pepe']);
+    }
+
+    /** @test  */
+    function the_state_must_be_valid()
+    {
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $this->from('usuarios/'.$user->id.'/editar')
+            ->put('usuarios/'.$user->id, $this->getValidData([
+                'state' => 'invalid-state',
+            ]))->assertRedirect('usuarios/' . $user->id . '/editar')
+            ->assertSessionHasErrors(['state']);
+
+        $this->assertDatabaseMissing('users', ['first_name' => 'Pepe']);
     }
 }
