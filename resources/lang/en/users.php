@@ -1,6 +1,10 @@
 <?php
 
     return [
+        'title' => [
+            'index' => 'Usuarios',
+            'trash' => 'Listado de usuarios en la papelera',
+        ],
         'roles' => [
             'admin' => 'Administrator',
             'user' => 'User',
@@ -8,8 +12,8 @@
         'filters' => [
             'roles' => [
                 'all' => 'Rol',
-                'admins' => 'Administradores',
-                'users' => 'Usuarios'
+                'admin' => 'Administradores',
+                'user' => 'Usuarios'
             ],
             'states' => [
                 'all' => 'Todos',

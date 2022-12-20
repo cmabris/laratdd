@@ -20,6 +20,7 @@ class UserController extends Controller
                 }
             })
             ->byState(request('state'))
+            ->byRole(request('role'))
             ->search(request('search'))
             ->orderBy('created_at', 'DESC')
             ->paginate();
@@ -28,10 +29,8 @@ class UserController extends Controller
 
         return view('users.index', [
             'users' => $users,
-            'title' => 'Usuarios',
-            'roles' => trans('users.filters.roles'),
+            'view' => 'index',
             'skills' => Skill::orderBy('name')->get(),
-            'states' => trans('users.filters.states'),
             'checkedSkills' => collect(request('skills')),
         ]);
     }
@@ -51,7 +50,6 @@ class UserController extends Controller
             'user' => $user,
             'professions' => Profession::orderBy('title', 'ASC')->get(),
             'skills' => Skill::orderBy('name', 'ASC')->get(),
-            'roles' => trans('users.roles'),
         ]);
     }
 
@@ -102,7 +100,7 @@ class UserController extends Controller
     {
         return view('users.index', [
             'users' => User::onlyTrashed()->paginate(),
-            'title' => 'Listado de usuarios en la papelera',
+            'view' => 'trash',
         ]);
     }
 
