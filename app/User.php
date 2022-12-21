@@ -2,10 +2,10 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -25,6 +25,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token'
     ];
+
+    /**
+     * Create a new Eloquent query builder for the model.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function newEloquentBuilder($query)
+    {
+        return new UserQuery($query);
+    }
+
 
     public function profile()
     {
@@ -46,11 +58,6 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    public static function findByEmail($email)
-    {
-        return static::whereEmail($email)->first();
-    }
-
     public function getNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
@@ -66,35 +73,5 @@ class User extends Authenticatable
     public function setStateAttribute($value)
     {
         $this->attributes['active'] = $value == 'active';
-    }
-
-    public function scopeSearch($query, $search)
-    {
-        if (empty($search)) {
-            return;
-        }
-        $query->whereRaw('CONCAT(first_name, " ", last_name) like ?', "%{$search}%")
-            ->orWhere('email', 'like', "%{$search}%")
-            ->orWhereHas('team', function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%");
-            });
-    }
-
-    public function scopeByState($query, $state)
-    {
-        if ($state == 'active') {
-            return $query->where('active', true);
-        }
-
-        if ($state == 'inactive') {
-            return $query->where('active', false);
-        }
-    }
-
-    public function scopeByRole($query, $role)
-    {
-        if (in_array($role, ['admin', 'user'])) {
-            $query->where('role', $role);
-        }
     }
 }
