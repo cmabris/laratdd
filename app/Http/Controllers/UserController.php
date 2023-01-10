@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\{Http\Requests\CreateUserRequest, Http\Requests\UpdateUserRequest, Profession, Skill, User, UserProfile};
+use App\{Http\Requests\CreateUserRequest,
+    Http\Requests\UpdateUserRequest,
+    Profession,
+    Skill,
+    User,
+    UserFilter,
+    UserProfile};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(UserFilter $userFilter)
     {
         $users = User::query()
             ->with('team','skills','profile.profession')
@@ -19,11 +25,11 @@ class UserController extends Controller
                     $query->doesntHave('team');
                 }
             })
-            ->filterBy(request()->all(['state', 'role', 'search']))
+            ->filterBy($userFilter, request()->only(['state', 'role', 'search']))
             ->orderBy('created_at', 'DESC')
             ->paginate();
 
-        $users->appends(request(['search','team', 'role', 'state']));
+        $users->appends($userFilter->valid());
 
         return view('users.index', [
             'users' => $users,
