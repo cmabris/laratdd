@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             'email' => 'pepe@mail.es',
             'password' => bcrypt('123456'),
             'role' => 'admin',
-            'created_at' => now()->addDay(),
+            'created_at' => now(),
             'active' => true,
         ]);
 
@@ -60,14 +60,13 @@ class UserSeeder extends Seeder
         $user = factory(User::class)->create([
             'team_id' => rand(0, 2) ? null : $this->teams->random()->id,
             'active' => rand(0,3) ? true : false,
+            'created_at' => now()->subDays(rand(1,90)),
         ]);
 
         $user->skills()->attach($this->skills->random(rand(0, 7)));
 
-        $user->profile()->create(
-            factory(\App\UserProfile::class)->raw([
-                'profession_id' => rand(0, 2) ? $this->professions->random()->id : null,
-            ])
-        );
+        $user->profile()->update([
+            'profession_id' => rand(0, 2) ? $this->professions->random()->id : null,
+        ]);
     }
 }

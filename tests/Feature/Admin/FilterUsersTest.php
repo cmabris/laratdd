@@ -93,4 +93,58 @@ class FilterUsersTest extends TestCase
             ->notContains($backendDev)
             ->notContains($frontendDev);
     }
+
+    /** @test */
+    function filter_users_created_from_date()
+    {
+        $newestUser = factory(User::class)->create([
+            'created_at' => '2022-10-02 12:00:00'
+        ]);
+        $oldestUser = factory(User::class)->create([
+            'created_at' => '2022-09-29 12:00:00'
+        ]);
+        $newUser = factory(User::class)->create([
+            'created_at' => '2022-10-01 00:00:00'
+        ]);
+        $oldUser = factory(User::class)->create([
+            'created_at' => '2022-09-30 23:59:59'
+        ]);
+
+        $response = $this->get('usuarios?from=01/10/2022');
+
+        $response->assertOk();
+
+        $response->assertViewCollection('users')
+            ->contains($newUser)
+            ->contains($newestUser)
+            ->notContains($oldUser)
+            ->notContains($oldestUser);
+    }
+
+    /** @test */
+    function filter_users_created_to_date()
+    {
+        $newestUser = factory(User::class)->create([
+            'created_at' => '2022-10-02 12:00:00'
+        ]);
+        $oldestUser = factory(User::class)->create([
+            'created_at' => '2022-09-29 12:00:00'
+        ]);
+        $newUser = factory(User::class)->create([
+            'created_at' => '2022-10-01 00:00:00'
+        ]);
+        $oldUser = factory(User::class)->create([
+            'created_at' => '2022-09-30 23:59:59'
+        ]);
+
+        $response = $this->get('usuarios?to=30/09/2022');
+
+        $response->assertOk();
+
+        $response->assertViewCollection('users')
+            ->contains($oldestUser)
+            ->contains($oldUser)
+            ->notContains($newestUser)
+            ->notContains($newUser);
+    }
 }
