@@ -2,10 +2,18 @@
 
 namespace App;
 
+use Illuminate\Support\Arr;
+
 class Sortable
 {
     protected $currentColumn;
     protected $currentDirection;
+    protected $currentUrl;
+
+    public function __construct($currentUrl)
+    {
+        $this->currentUrl = $currentUrl;
+    }
 
     public function setCurrentOrder($column, $direction = 'asc')
     {
@@ -24,5 +32,11 @@ class Sortable
         }
 
         return 'link-sortable';
+    }
+
+    public function url($column, $direction = 'asc')
+    {
+        return $this->currentUrl . '?' .
+            Arr::query(['order' => $column, 'direction' => $direction]);
     }
 }
