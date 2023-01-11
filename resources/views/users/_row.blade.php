@@ -9,7 +9,6 @@
         <span class="note">{{ $user->team->name }}</span>
     </th>
     <td>{{ $user->email }}</td>
-    <td>{{ $user->role }}</td>
     <td>
         <span class="note">Registro: {{ $user->created_at->format('d/m/Y') }}</span>
         <span class="note">Último login: {{ $user->created_at->format('d/m/Y') }}</span>
