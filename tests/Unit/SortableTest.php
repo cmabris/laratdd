@@ -49,11 +49,12 @@ class SortableTest extends TestCase
     }
 
     /** @test */
-    function builds_a_url_with_descendent_order()
+    function builds_a_url_with_desc_order_if_the_current_column_matches_the_given_one_and_the_current_direction_is_asc()
     {
+        $this->sortable->setCurrentOrder('first_name', 'asc');
         $this->assertSame(
             'http://laratdd/demo?order=first_name&direction=desc',
-            $this->sortable->url('first_name', 'desc')
+            $this->sortable->url('first_name')
         );
     }
 }

@@ -21,20 +21,33 @@ class Sortable
         $this->currentDirection = $direction;
     }
 
+    protected function isSortingBy($column, $direction)
+    {
+        return $this->currentColumn == $column && $this->currentDirection == $direction;
+    }
+
     public function classes($column)
     {
-        if ($this->currentColumn == $column && $this->currentDirection == 'asc') {
+        if ($this->isSortingBy($column, 'asc')) {
             return 'link-sortable link-sorted-up';
         }
 
-        if ($this->currentColumn == $column && $this->currentDirection == 'desc') {
+        if ($this->isSortingBy($column, 'desc')) {
             return 'link-sortable link-sorted-down';
         }
 
         return 'link-sortable';
     }
 
-    public function url($column, $direction = 'asc')
+    public function url($column)
+    {
+        if ($this->isSortingBy($column, 'asc')) {
+            return $this->buildSortableUrl($column, 'desc');
+        }
+        return $this->buildSortableUrl($column, 'asc');
+    }
+
+    public function buildSortableUrl($column, $direction = 'asc')
     {
         return $this->currentUrl . '?' .
             Arr::query(['order' => $column, 'direction' => $direction]);
