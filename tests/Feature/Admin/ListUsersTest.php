@@ -166,4 +166,42 @@ class ListUsersTest extends TestCase
                 'Jane Doe',
             ]);
     }
+
+    /** @test */
+    function invalid_order_query_data_is_ignored_and_the_default_order_is_used_instead()
+    {
+        factory(User::class)->create(['first_name' => 'Richard Roe', 'created_at' => now()->subDays(3)]);
+        factory(User::class)->create(['first_name' => 'John Doe', 'created_at' => now()->subDays(2)]);
+        factory(User::class)->create(['first_name' => 'Jane Doe', 'created_at' => now()->subDays(5)]);
+
+        $this->get('usuarios?order=id&direction=asc')
+            ->assertSeeInOrder([
+                'John Doe',
+                'Richard Roe',
+                'Jane Doe',
+            ]);
+
+        $this->get('usuarios?order=invalid_column&direction=desc')
+            ->assertSeeInOrder([
+                'John Doe',
+                'Richard Roe',
+                'Jane Doe',
+            ]);
+    }
+
+    /** @test */
+    function invalid_direction_query_data_is_ignored_and_the_default_direction_is_used_instead()
+    {
+        factory(User::class)->create(['first_name' => 'John Doe']);
+        factory(User::class)->create(['first_name' => 'Jane Doe']);
+        factory(User::class)->create(['first_name' => 'Richard Roe']);
+
+        $this->get('usuarios?order=first_name&direction=down')
+            ->assertOk()
+            ->assertSeeInOrder([
+                'Jane Doe',
+                'John Doe',
+                'Richard Roe',
+            ]);
+    }
 }

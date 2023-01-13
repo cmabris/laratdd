@@ -18,10 +18,8 @@ class UserController extends Controller
     public function index(UserFilter $userFilter, Sortable $sortable)
     {
         $users = User::query()
-            ->when(request()->routeIs('users.trashed'), function ($q) {
-                $q->onlyTrashed();
-            })
             ->with('team','skills','profile.profession')
+            ->onlyTrashedIf(request()->routeIs('users.trashed'))
             ->when(request('team'), function ($query, $team) {
                 if ($team === 'with_team') {
                     $query->has('team');
@@ -29,12 +27,8 @@ class UserController extends Controller
                     $query->doesntHave('team');
                 }
             })
-            ->filterBy($userFilter, request()->only(['state', 'role', 'search', 'skills', 'from', 'to']))
-            ->when(request('order'), function ($q) {
-                $q->orderBy(request('order'), request('direction','asc'));
-            }, function ($q) {
-                $q->orderBy('created_at', 'desc');
-            })
+            ->filterBy($userFilter, request()->only(['state', 'role', 'search', 'skills', 'from', 'to', 'order', 'direction']))
+            ->orderBy('created_at', 'desc')
             ->paginate();
 
         $users->appends($userFilter->valid());
@@ -111,7 +105,7 @@ class UserController extends Controller
         return redirect()->route('users');
     }
 
-    public function trashed(Sortable $sortable)
+    /*public function trashed(Sortable $sortable)
     {
         $users = User::onlyTrashed()
             ->when(request('order'), function ($q) {
@@ -128,6 +122,6 @@ class UserController extends Controller
             'view' => 'trash',
             'sortable' => $sortable,
         ]);
-    }
+    }*/
 
 }
