@@ -19,18 +19,18 @@ class Sortable
         $this->query = $query;
     }
 
-    protected function isSortingBy($column, $direction)
+    protected function isSortingBy($column)
     {
-        return Arr::get($this->query, 'order') == $column && Arr::get($this->query, 'direction', 'asc') == $direction;
+        return Arr::get($this->query, 'order') == $column;
     }
 
     public function classes($column)
     {
-        if ($this->isSortingBy($column, 'asc')) {
+        if ($this->isSortingBy($column)) {
             return 'link-sortable link-sorted-up';
         }
 
-        if ($this->isSortingBy($column, 'desc')) {
+        if ($this->isSortingBy($column . '-desc')) {
             return 'link-sortable link-sorted-down';
         }
 
@@ -39,15 +39,15 @@ class Sortable
 
     public function url($column)
     {
-        if ($this->isSortingBy($column, 'asc')) {
-            return $this->buildSortableUrl($column, 'desc');
+        if ($this->isSortingBy($column)) {
+            return $this->buildSortableUrl($column . '-desc');
         }
-        return $this->buildSortableUrl($column, 'asc');
+        return $this->buildSortableUrl($column);
     }
 
-    public function buildSortableUrl($column, $direction = 'asc')
+    public function buildSortableUrl($order)
     {
         return $this->currentUrl . '?' .
-            Arr::query(array_merge($this->query, ['order' => $column, 'direction' => $direction]));
+            Arr::query(array_merge($this->query, ['order' => $order]));
     }
 }

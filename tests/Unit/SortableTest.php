@@ -34,7 +34,7 @@ class SortableTest extends TestCase
     /** @test */
     function return_css_classes_to_indicate_the_column_is_sorted_in_descendent_order()
     {
-        $this->sortable->appends(['order' => 'first_name', 'direction' => 'desc']);
+        $this->sortable->appends(['order' => 'first_name-desc']);
 
         $this->assertSame('link-sortable link-sorted-down', $this->sortable->classes('first_name'));
     }
@@ -43,7 +43,7 @@ class SortableTest extends TestCase
     function builds_a_url_with_sortable_data()
     {
         $this->assertSame(
-            'http://laratdd/demo?order=first_name&direction=asc',
+            'http://laratdd/demo?order=first_name',
             $this->sortable->url('first_name')
         );
     }
@@ -51,11 +51,11 @@ class SortableTest extends TestCase
     /** @test */
     function builds_a_url_with_desc_order_if_the_current_column_matches_the_given_one_and_the_current_direction_is_asc()
     {
-        $this->sortable->appends(['order' => 'first_name', 'direction' => 'asc']);
+        $this->sortable->appends(['order' => 'first_name']);
 
         $this->assertSame(
-            'http://laratdd/demo?order=first_name&direction=desc',
-            $this->sortable->url('first_name')
+            'http://laratdd/demo?order=first_name-desc',
+            $this->sortable->url('first_name-desc')
         );
     }
 
@@ -68,7 +68,7 @@ class SortableTest extends TestCase
         ]);
 
         $this->assertSame(
-            'http://laratdd/demo?a=parameter&and=another-parameter&order=first_name&direction=asc',
+            'http://laratdd/demo?a=parameter&and=another-parameter&order=first_name',
             $this->sortable->url('first_name')
         );
     }
