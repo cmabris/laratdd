@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Rules\SortableColumn;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -21,7 +22,7 @@ class UserFilter extends QueryFilter
             'skills' => 'array|exists:skills,id',
             'from' => 'date_format:d/m/Y',
             'to' => 'date_format:d/m/Y',
-            'order' => 'in:first_name,email,date,first_name-desc,email-desc,date-desc',
+            'order' => [new SortableColumn(['first_name', 'email', 'date'])],
         ];
     }
 
