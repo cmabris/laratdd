@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Illuminate\Support\Str;
+
 trait TestHelpers
 {
     protected function assertDatabaseEmpty($table, $connection = null)
@@ -10,7 +12,7 @@ trait TestHelpers
 
         $this->assertSame(0, $total, sprintf(
             "Failed asserting the table [%s] is empty. %s %s found.",
-            $table, $total, str_plural('row', $total)
+            $table, $total, Str::plural('row', $total)
         ));
     }
 
@@ -20,8 +22,8 @@ trait TestHelpers
 
         $this->assertSame($expected, $found, sprintf(
             "Failed asserting the table [%s] has %s %s. %s %s found.",
-            $table, $expected, str_plural('row', $expected),
-            $found, str_plural('row', $found)
+            $table, $expected, Str::plural('row', $expected),
+            $found, Str::plural('row', $found)
         ));
     }
 
