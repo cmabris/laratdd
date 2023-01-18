@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Filters;
 
 use App\Rules\SortableColumn;
 use Illuminate\Support\Carbon;
@@ -80,4 +80,5 @@ class UserFilter extends QueryFilter
         }
 
     }
+
 }
