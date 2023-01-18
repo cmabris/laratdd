@@ -57,6 +57,12 @@ class User extends Authenticatable
         return $this->belongsTo(Team::class)->withDefault();
     }
 
+    public function lastLogin()
+    {
+        return $this->hasOne(Login::class)
+            ->orderByDesc('created_at');
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';
