@@ -9,7 +9,8 @@ class UserController extends Controller
     public function index(Sortable $sortable)
     {
         $users = User::query()
-            ->with('team','skills','profile.profession', 'lastLogin')
+            ->with('team','skills','profile.profession')
+            ->withLastLogin()
             ->onlyTrashedIf(request()->routeIs('users.trashed'))
             ->when(request('team'), function ($query, $team) {
                 if ($team === 'with_team') {

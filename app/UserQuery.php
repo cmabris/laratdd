@@ -11,4 +11,16 @@ class UserQuery extends QueryBuilder
     {
         return static::whereEmail($email)->first();
     }
+
+    public function withLastLogin()
+    {
+        $subselect = Login::select('logins.created_at')
+            ->whereColumn('logins.user_id', 'users.id')
+            ->latest()
+            ->limit(1);
+
+        return $this->addSelect([
+            'last_login_at' => $subselect,
+        ]);
+    }
 }
