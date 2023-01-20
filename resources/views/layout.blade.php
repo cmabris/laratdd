@@ -47,6 +47,8 @@
     </style>
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/sticky-footer-navbar.css') }}" rel="stylesheet">
+
+    @stack('styles')
 </head>
 <body class="d-flex flex-column h-100">
 <header>
@@ -105,6 +107,7 @@
         format: 'dd/mm/yyyy'
     });
 </script>
+@stack('scripts')
 </body>
 </html>
 

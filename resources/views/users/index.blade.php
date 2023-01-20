@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('livewire-layout')
 
 @section('title', trans("users.title.{$view}"))
 
@@ -14,6 +14,8 @@
             @endif
         </p>
     </div>
+
+    @livewire('users-list')
 
     @includeWhen($view === 'index','users._filters')
 
