@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Login;
 use App\User;
+use PHPUnit\Framework\SkippedTest;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -222,6 +224,43 @@ class ListUsersTest extends TestCase
                 'John Doe',
                 'Richard Roe',
                 'Jane Doe',
+            ]);
+    }
+
+    /** @test */
+    function users_are_ordered_by_login_date()
+    {
+        factory(Login::class)->create([
+            'created_at' => now()->subDays(3),
+            'user_id' => factory(User::class)->create([
+                'first_name' => 'John Doe'
+            ]),
+        ]);
+        factory(Login::class)->create([
+            'created_at' => now()->subDays(),
+            'user_id' => factory(User::class)->create([
+                'first_name' => 'Jane Doe'
+            ]),
+        ]);
+        factory(Login::class)->create([
+            'created_at' => now()->subDays(2),
+            'user_id' => factory(User::class)->create([
+                'first_name' => 'Richard Roe'
+            ]),
+        ]);
+
+        $this->get('usuarios?order=login')
+            ->assertSeeInOrder([
+                'John Doe',
+                'Richard Roe',
+                'Jane Doe',
+            ]);
+
+        $this->get('usuarios?order=login-desc')
+            ->assertSeeInOrder([
+                'Jane Doe',
+                'Richard Roe',
+                'John Doe',
             ]);
     }
 }
