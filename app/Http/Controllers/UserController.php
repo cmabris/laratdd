@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\{Http\Requests\CreateUserRequest, Http\Requests\UpdateUserRequest, Profession, Skill, Sortable, User};
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -89,7 +90,6 @@ class UserController extends Controller
 
     public function trash(User $user)
     {
-        $user->profile()->delete();
         $user->delete();
 
         return redirect()->route('users');

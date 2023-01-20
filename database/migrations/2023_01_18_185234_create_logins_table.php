@@ -19,7 +19,8 @@ class CreateLoginsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('CASCADE');
 
             $table->timestamps();
         });
