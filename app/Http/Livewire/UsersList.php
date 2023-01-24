@@ -5,15 +5,18 @@ namespace App\Http\Livewire;
 use App\Skill;
 use App\Sortable;
 use App\User;
+use Illuminate\Http\Request;
 use Livewire\Component;
 
 class UsersList extends Component
 {
-    protected $view;
+    public $view;
+    public $originalUrl;
 
-    public function mount($view)
+    public function mount($view, Request $request)
     {
         $this->view = $view;
+        $this->originalUrl = $request->url();
     }
 
     protected function getUsers(Sortable $sortable)
@@ -40,7 +43,7 @@ class UsersList extends Component
 
     public function render()
     {
-        $sortable = new Sortable(request()->url());
+        $sortable = new Sortable($this->originalUrl);
 
         $this->view = 'index';
 
