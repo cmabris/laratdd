@@ -16,12 +16,8 @@
     </div>
 
     @livewire('users-list', compact([
-    'users',
     'view',
-    'skills',
-    'checkedSkills',
-    'sortable',
-]))
+    ]))
 
 @endsection
 

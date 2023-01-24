@@ -3,35 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\{Http\Requests\CreateUserRequest, Http\Requests\UpdateUserRequest, Profession, Skill, Sortable, User};
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function index(Sortable $sortable)
+    public function index(Request $request)
     {
-        $users = User::query()
-            ->with('team','skills','profile.profession')
-            ->withLastLogin()
-            ->onlyTrashedIf(request()->routeIs('users.trashed'))
-            ->when(request('team'), function ($query, $team) {
-                if ($team === 'with_team') {
-                    $query->has('team');
-                } elseif ($team === 'without_team') {
-                    $query->doesntHave('team');
-                }
-            })
-            ->applyFilters()
-            ->orderBy('created_at', 'desc')
-            ->paginate();
-
-        $sortable->appends($users->parameters());
-
         return view('users.index', [
-            'users' => $users,
-            'view' => request()->routeIs('users.trashed') ? 'trash' : 'index',
-            'skills' => Skill::orderBy('name')->get(),
-            'checkedSkills' => collect(request('skills')),
-            'sortable' => $sortable,
+            'view' => $request->routeIs('users.trashed') ? 'trash' : 'index',
         ]);
     }
 

@@ -1,7 +1,7 @@
 <tr>
     <td rowspan="2">{{ $user->id }}</td>
     <th scope="row">
-        {{ $user->name }} {{ $user->status }}
+        {{ $user->first_name }} {{ $user->last_name }} {{ $user->status }}
         @if($user->role != 'user')
             ({{ $user->role }})
         @endif

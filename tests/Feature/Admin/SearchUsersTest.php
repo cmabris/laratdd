@@ -14,44 +14,6 @@ class SearchUsersTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    /*function search_users_by_first_name()
-    {
-        $joel = factory(User::class)->create([
-            'first_name' => 'Joel',
-        ]);
-        $ellie = factory(User::class)->create([
-            'first_name' => 'Ellie',
-        ]);
-
-        $this->get('usuarios?search=Joel')
-            ->assertStatus(200)
-            ->assertSee('Usuarios')
-            ->assertViewHas('users', function ($users) use ($joel, $ellie) {
-                return $users->contains($joel) &&
-                    !$users->contains($ellie);
-            });
-    }*/
-
-    /** @test */
-    /*function partial_search_by_first_name()
-    {
-        $joel = factory(User::class)->create([
-            'first_name' => 'Joel',
-        ]);
-        $ellie = factory(User::class)->create([
-            'first_name' => 'Ellie',
-        ]);
-
-        $this->get('usuarios?search=Jo')
-            ->assertStatus(200)
-            ->assertSee('Usuarios')
-            ->assertViewHas('users', function ($users) use ($joel, $ellie) {
-                return $users->contains($joel) &&
-                    !$users->contains($ellie);
-            });
-    }*/
-
-    /** @test */
     function search_users_by_full_name()
     {
         $joel = factory(User::class)->create([
@@ -65,11 +27,8 @@ class SearchUsersTest extends TestCase
 
         $this->get('usuarios?search=Joel Miller')
             ->assertStatus(200)
-            ->assertSee('Usuarios')
-            ->assertViewHas('users', function ($users) use ($joel, $ellie) {
-                return $users->contains($joel) &&
-                    !$users->contains($ellie);
-            });
+            ->assertSee('Joel Miller')
+            ->assertDontSee('Ellie Miller');
     }
 
     /** @test */
@@ -86,11 +45,9 @@ class SearchUsersTest extends TestCase
 
         $this->get('usuarios?search=Jo')
             ->assertStatus(200)
-            ->assertSee('Usuarios')
-            ->assertViewHas('users', function ($users) use ($joel, $ellie) {
-                return $users->contains($joel) &&
-                    !$users->contains($ellie);
-            });
+            ->assertSee('Joel Miller')
+            ->assertDontSee('Ellie Miller');
+
     }
 
     /** @test */
@@ -105,11 +62,8 @@ class SearchUsersTest extends TestCase
 
         $this->get('usuarios?search=joel@example.com')
             ->assertStatus(200)
-            ->assertSee('Usuarios')
-            ->assertViewHas('users', function ($users) use ($joel, $ellie) {
-                return $users->contains($joel) &&
-                    !$users->contains($ellie);
-            });
+            ->assertSee('joel@example.com')
+            ->assertDontSee('ellie@example.com');
     }
 
     /** @test */
@@ -124,11 +78,8 @@ class SearchUsersTest extends TestCase
 
         $this->get('usuarios?search=el@exam')
             ->assertStatus(200)
-            ->assertSee('Usuarios')
-            ->assertViewHas('users', function ($users) use ($joel, $ellie) {
-                return $users->contains($joel) &&
-                    !$users->contains($ellie);
-            });
+            ->assertSee('joel@example.com')
+            ->assertDontSee('ellie@example.com');
     }
 
     /** @test */
@@ -152,12 +103,10 @@ class SearchUsersTest extends TestCase
         ]);
 
         $response = $this->get('usuarios?search=Firefly')
-            ->assertStatus(200);
-
-        $response->assertViewCollection('users')
-            ->contains($marlene)
-            ->notContains($joel)
-            ->notContains($ellie);
+            ->assertStatus(200)
+            ->assertSee('Marlene')
+            ->assertDontSee('Joel')
+            ->assertDontSee('Ellie');
     }
 
     /** @test */
@@ -181,12 +130,10 @@ class SearchUsersTest extends TestCase
         ]);
 
         $response = $this->get('usuarios?search=Fire')
-            ->assertStatus(200);
-
-        $response->assertViewCollection('users')
-            ->contains($marlene)
-            ->notContains($joel)
-            ->notContains($ellie);
+            ->assertStatus(200)
+            ->assertSee('Marlene')
+            ->assertDontSee('Joel')
+            ->assertDontSee('Ellie');
     }
 
 }

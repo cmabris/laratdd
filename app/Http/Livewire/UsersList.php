@@ -2,33 +2,54 @@
 
 namespace App\Http\Livewire;
 
+use App\Skill;
+use App\Sortable;
+use App\User;
 use Livewire\Component;
 
 class UsersList extends Component
 {
-    protected $users;
     protected $view;
-    protected $skills;
-    protected $checkedSkills;
-    protected $sortable;
 
-    public function mount($users, $view, $skills, $checkedSkills, $sortable)
+    public function mount($view)
     {
-        $this->users = $users;
         $this->view = $view;
-        $this->skills = $skills;
-        $this->checkedSkills = $checkedSkills;
-        $this->sortable = $sortable;
+    }
+
+    protected function getUsers(Sortable $sortable)
+    {
+        $users = User::query()
+            ->with('team','skills','profile.profession')
+            ->withLastLogin()
+            ->onlyTrashedIf(request()->routeIs('users.trashed'))
+            ->when(request('team'), function ($query, $team) {
+                if ($team === 'with_team') {
+                    $query->has('team');
+                } elseif ($team === 'without_team') {
+                    $query->doesntHave('team');
+                }
+            })
+            ->applyFilters()
+            ->orderBy('created_at', 'desc')
+            ->paginate();
+
+        $sortable->appends($users->parameters());
+
+        return $users;
     }
 
     public function render()
     {
+        $sortable = new Sortable(request()->url());
+
+        $this->view = 'index';
+
         return view('users._livewire-list', [
-            'users' => $this->users,
+            'users' => $this->getUsers($sortable),
             'view' => $this->view,
-            'skills' => $this->skills,
-            'checkedSkills' => $this->checkedSkills,
-            'sortable' => $this->sortable,
+            'skills' => Skill::getList(),
+            'checkedSkills' => collect(request('skills')),
+            'sortable' => $sortable,
         ]);
     }
 }
