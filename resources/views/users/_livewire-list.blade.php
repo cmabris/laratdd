@@ -1,4 +1,4 @@
-<div>
+<div id="users-table">
     @includeWhen($view === 'index','users._filters')
 
     <p><a href="#" wire:click="$refresh()" class="btn btn-info">Recargar componente</a></p>

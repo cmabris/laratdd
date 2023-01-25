@@ -74,21 +74,23 @@
             <div class="form-inline form-dates">
                 <label for="from" class="form-label-sm">Fecha</label>
                 <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" name="from"
-                           id="from" placeholder="Desde" value="{{ request('from') }}">
+                    <input wire:model="from"
+                            type="text" class="form-control form-control-sm" name="from"
+                           id="from" placeholder="Desde" value="{{ $from }}">
 <!--                    <div class="input-group-append">
                         <button type="button" class="btn btn-secondary btn-sm"><span class="oi oi-calendar"></span></button>
                     </div>-->
                 </div>
                 <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" name="to"
-                           id="to" placeholder="Hasta" value="{{ request('to') }}">
+                    <input wire:model="to"
+                            type="text" class="form-control form-control-sm" name="to"
+                           id="to" placeholder="Hasta" value="{{ $to }}">
 <!--                    <div class="input-group-append">
                         <button type="button" class="btn btn-secondary btn-sm"><span class="oi oi-calendar"></span></button>
                     </div>-->
                 </div>
 
-                <button type="submit" class="btn btn-sm btn-primary">Filtrar</button>
+                <button id="btn-filter" type="submit" class="btn btn-sm btn-primary">Filtrar</button>
             </div>
         </div>
     </div>

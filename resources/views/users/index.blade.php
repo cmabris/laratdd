@@ -24,3 +24,33 @@
 @section('sidebar')
     @parent
 @endsection
+
+@push('scripts')
+    <script>
+        function loadCalendars() {
+            ['from', 'to'].forEach(function (field) {
+                $('#'+field).datepicker({
+                    uiLibrary: 'bootstrap4',
+                    format: 'dd/mm/yyyy'
+                }).on('change', function () {
+                    var usersTableId = $('#users-table').attr('wire:id');
+
+                    var usersTable = window.livewire.find(usersTableId);
+
+                    if (usersTable.get(field) != $(this).val()) {
+                        usersTable.set(field, $(this).val());
+                    }
+                });
+            });
+        }
+
+        loadCalendars();
+        $('#btn-filter').hide();
+
+        document.addEventListener('livewire:load', () => {
+            Livewire.hook('message.processed', (message,component) =>  {
+                loadCalendars();
+            })
+        })
+    </script>
+@endpush
