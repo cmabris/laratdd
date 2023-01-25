@@ -13,6 +13,14 @@ class UsersList extends Component
     public $view;
     public $originalUrl;
 
+    public $search;
+
+    protected $queryString = [
+        'search' => [
+            'except' => '',
+        ]
+    ];
+
     public function mount($view, Request $request)
     {
         $this->view = $view;
@@ -32,7 +40,9 @@ class UsersList extends Component
                     $query->doesntHave('team');
                 }
             })
-            ->applyFilters()
+            ->applyFilters([
+                'search' => $this->search,
+            ])
             ->orderBy('created_at', 'desc')
             ->paginate();
 

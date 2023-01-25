@@ -29,13 +29,11 @@
         <div class="col-md-6">
             <div class="form-inline form-search">
                 <div class="input-group">
-                    <input type="search" class="form-control form-control-sm"
+                    <input wire:model.debounce.1000ms="search"
+                            type="search" class="form-control form-control-sm"
                            placeholder="Buscar..." name="search"
-                           value="{{ request('search') }}"
+                           value="{{ $search }}"
                     >
-<!--                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-secondary btn-sm"><span class="oi oi-magnifying-glass"></span></button>
-                    </div>-->
                 </div>
 
                 <div class="btn-group">
