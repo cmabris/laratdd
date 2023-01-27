@@ -11,7 +11,7 @@ use function foo\func;
 
 class SearchUsersTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, GetsUserListComponent;
 
     /** @test */
     function search_users_by_full_name()
@@ -25,7 +25,7 @@ class SearchUsersTest extends TestCase
             'last_name' => 'Miller',
         ]);
 
-        $this->get('usuarios?search=Joel Miller')
+        $this->getUserListComponent(['search' => 'Joel Miller'])
             ->assertStatus(200)
             ->assertSee('Joel Miller')
             ->assertDontSee('Ellie Miller');
@@ -43,7 +43,7 @@ class SearchUsersTest extends TestCase
             'last_name' => 'Miller',
         ]);
 
-        $this->get('usuarios?search=Jo')
+        $this->getUserListComponent(['search' => 'Jo'])
             ->assertStatus(200)
             ->assertSee('Joel Miller')
             ->assertDontSee('Ellie Miller');
@@ -60,7 +60,7 @@ class SearchUsersTest extends TestCase
             'email' => 'ellie@example.com',
         ]);
 
-        $this->get('usuarios?search=joel@example.com')
+        $this->getUserListComponent(['search' => 'joel@example.com'])
             ->assertStatus(200)
             ->assertSee('joel@example.com')
             ->assertDontSee('ellie@example.com');
@@ -76,7 +76,7 @@ class SearchUsersTest extends TestCase
             'email' => 'ellie@example.com',
         ]);
 
-        $this->get('usuarios?search=el@exam')
+        $this->getUserListComponent(['search' => 'el@exam'])
             ->assertStatus(200)
             ->assertSee('joel@example.com')
             ->assertDontSee('ellie@example.com');
@@ -102,7 +102,7 @@ class SearchUsersTest extends TestCase
             ])->id,
         ]);
 
-        $response = $this->get('usuarios?search=Firefly')
+        $this->getUserListComponent(['search' => 'Firefly'])
             ->assertStatus(200)
             ->assertSee('Marlene')
             ->assertDontSee('Joel')
@@ -129,7 +129,7 @@ class SearchUsersTest extends TestCase
             ])->id,
         ]);
 
-        $response = $this->get('usuarios?search=Fire')
+        $this->getUserListComponent(['search' => 'Fire'])
             ->assertStatus(200)
             ->assertSee('Marlene')
             ->assertDontSee('Joel')

@@ -44,6 +44,9 @@ class UsersList extends Component
     {
         $this->view = $view;
         $this->originalUrl = $request->url();
+        $this->order = $request->input('order');
+        $this->search = $request->input('search');
+        $this->page = $request->input('page');
     }
 
     public function refreshList($field, $value, $checked = true)
