@@ -36,10 +36,29 @@ class UsersList extends Component
         'order' => ['except' => ''],
     ];
 
+    protected $listeners = [
+        'refreshUserList' => 'refreshList',
+    ];
+
     public function mount($view, Request $request)
     {
         $this->view = $view;
         $this->originalUrl = $request->url();
+    }
+
+    public function refreshList($field, $value, $checked = true)
+    {
+        if (in_array($field, ['search', 'state', 'role', 'from', 'to'])) {
+            $this->$field = $value;
+        }
+
+        if ($field === 'skills') {
+            if ($checked) {
+                $this->skills[$value] = $value;
+            } else {
+                unset($this->skills[$value]);
+            }
+        }
     }
 
     protected function getUsers(Sortable $sortable)
@@ -91,9 +110,6 @@ class UsersList extends Component
 
         return view('users._livewire-list', [
             'users' => $this->getUsers($sortable),
-            'view' => $this->view,
-            'skillsList' => Skill::getList(),
-            'checkedSkills' => collect(request('skills')),
             'sortable' => $sortable,
         ]);
     }
