@@ -19,6 +19,7 @@ class UsersList extends Component
     public $skills = [];
     public $from;
     public $to;
+    public $order;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -27,6 +28,7 @@ class UsersList extends Component
         'skills' => [],
         'from' => ['except' => ''],
         'to' => ['except' => ''],
+        'order' => ['except' => ''],
     ];
 
     public function mount($view, Request $request)
@@ -55,7 +57,7 @@ class UsersList extends Component
                 'skills' => $this->skills,
                 'from' => $this->from,
                 'to' => $this->to,
-                'order' => request()->input('order'),
+                'order' => $this->order,
             ])
             ->orderBy('created_at', 'desc')
             ->paginate();
@@ -63,6 +65,11 @@ class UsersList extends Component
         $sortable->appends($users->parameters());
 
         return $users;
+    }
+
+    public function changeOrder($order)
+    {
+        $this->order = $order;
     }
 
     public function render()

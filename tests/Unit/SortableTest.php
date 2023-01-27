@@ -81,4 +81,13 @@ class SortableTest extends TestCase
         $this->assertSame(['email', 'asc'], Sortable::info('email'));
         $this->assertSame(['email', 'desc'], Sortable::info('email-desc'));
     }
+
+    /** @test */
+    function gets_the_right_order()
+    {
+        $this->assertSame('first_name', $this->sortable->order('first_name'));
+        $this->sortable->appends(['order' => 'first_name']);
+        $this->assertSame('first_name-desc', $this->sortable->order('first_name'));
+        $this->assertSame('email', $this->sortable->order('email'));
+    }
 }

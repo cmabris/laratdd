@@ -40,10 +40,7 @@ class Sortable
 
     public function url($column)
     {
-        if ($this->isSortingBy($column)) {
-            return $this->buildSortableUrl($column . '-desc');
-        }
-        return $this->buildSortableUrl($column);
+        return $this->buildSortableUrl($this->order($column));
     }
 
     public function buildSortableUrl($order)
@@ -59,5 +56,13 @@ class Sortable
         } else {
             return [$order, 'asc'];
         }
+    }
+
+    public function order($order)
+    {
+        if ($this->isSortingBy($order)) {
+            return "{$order}-desc";
+        }
+        return $order;
     }
 }
