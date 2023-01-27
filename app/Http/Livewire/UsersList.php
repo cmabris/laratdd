@@ -7,9 +7,14 @@ use App\Sortable;
 use App\User;
 use Illuminate\Http\Request;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class UsersList extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $view;
     public $originalUrl;
 
@@ -70,6 +75,12 @@ class UsersList extends Component
     public function changeOrder($order)
     {
         $this->order = $order;
+        $this->resetPage();
+    }
+
+    public function updating()
+    {
+        $this->resetPage();
     }
 
     public function render()
