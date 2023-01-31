@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class UsersList extends Component
+class UserList extends Component
 {
     use WithPagination;
 
@@ -42,25 +42,24 @@ class UsersList extends Component
 
     public function mount($view, Request $request)
     {
-        $this->view = $view;
-        $this->originalUrl = $request->url();
-        $this->order = $request->input('order');
-        $this->search = $request->input('search');
-        $this->page = $request->input('page');
+        $this->fill([
+            'view' => $view,
+            'originalUrl' => $request->url(),
+            'order' => $request->input('order'),
+            'search' => $request->input('search'),
+            'skills' => $this->normalizeSkills($request->input('skills')),
+            'page' => $request->input('page'),
+        ]);
     }
 
     public function refreshList($field, $value, $checked = true)
     {
         if (in_array($field, ['search', 'state', 'role', 'from', 'to'])) {
-            $this->$field = $value;
+            $this->fill([$field => $value]);
         }
 
         if ($field === 'skills') {
-            if ($checked) {
-                $this->skills[$value] = $value;
-            } else {
-                unset($this->skills[$value]);
-            }
+            $this->toggleSkill($checked, $value);
         }
     }
 
@@ -115,5 +114,22 @@ class UsersList extends Component
             'users' => $this->getUsers($sortable),
             'sortable' => $sortable,
         ]);
+    }
+
+    private function toggleSkill($checked, $value): void
+    {
+        if ($checked) {
+            $this->skills[$value] = $value;
+        } else {
+            unset($this->skills[$value]);
+        }
+    }
+
+    private function normalizeSkills($skills): array
+    {
+        if (is_array($skills)) {
+            return array_combine($skills, $skills);
+        }
+        return [];
     }
 }

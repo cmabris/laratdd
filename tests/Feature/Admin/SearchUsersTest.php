@@ -4,9 +4,9 @@ namespace Tests\Feature\Admin;
 
 use App\Team;
 use App\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Livewire\GetsUserListComponent;
+use Tests\TestCase;
 use function foo\func;
 
 class SearchUsersTest extends TestCase

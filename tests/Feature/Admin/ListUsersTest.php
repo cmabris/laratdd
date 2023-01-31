@@ -2,15 +2,11 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Http\Livewire\UsersList;
 use App\Login;
 use App\User;
-use Illuminate\Http\Request;
-use Livewire\Livewire;
-use PHPUnit\Framework\SkippedTest;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Livewire\GetsUserListComponent;
+use Tests\TestCase;
 
 class ListUsersTest extends TestCase
 {
